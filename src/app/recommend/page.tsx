@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Category, CardScore } from "@/types/database";
 import { CATEGORY_LABELS, CATEGORY_ICONS, REWARD_TYPE_LABELS } from "@/lib/constants";
+import { recommend } from "@/lib/recommendation";
 import { PageHeader } from "@/components/ui/LoadingSpinner";
 
 const CATEGORIES = Object.keys(CATEGORY_LABELS) as Category[];
@@ -27,22 +28,13 @@ export default function RecommendPage() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/recommend", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          amount_hkd: parseFloat(form.amount_hkd),
-          merchant: form.merchant.trim(),
-          location: form.location.trim(),
-          category: form.category,
-        }),
+      const result = await recommend({
+        amount_hkd: parseFloat(form.amount_hkd),
+        merchant: form.merchant.trim(),
+        location: form.location.trim(),
+        category: form.category,
       });
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "推薦計算失敗");
-      }
-      const data = await res.json();
-      setResults(data.recommendations);
+      setResults(result.recommendations);
     } catch (err) {
       setError(err instanceof Error ? err.message : "發生錯誤");
     } finally {

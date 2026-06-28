@@ -22,6 +22,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "WalletBrain - 信用卡智能推薦",
   description: "香港信用卡智能助手 - 幫你揀最適合嘅信用卡",
+  metadataBase: new URL("https://edwardwanwhc-code.github.io"),
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",

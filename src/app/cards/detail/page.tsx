@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState, Suspense } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { getCard, updateCard, archiveCard, setCategoryRewards } from "@/services/cards";
 import { getMonthlySpending } from "@/services/transactions";
 import type { CardWithCategoryRewards, Category, RewardType, CardNetwork } from "@/types/database";
@@ -12,10 +12,10 @@ const REWARD_TYPES = ["cashback", "miles", "points", "discount"] as const;
 const NETWORKS = ["Visa", "Mastercard", "Amex", "UnionPay", "JCB"] as const;
 const CATEGORIES = Object.keys(CATEGORY_LABELS) as Category[];
 
-export default function CardDetailPage() {
-  const params = useParams();
+function CardDetailContent() {
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const cardId = params.id as string;
+  const cardId = searchParams.get("id") || "";
 
   const [card, setCard] = useState<CardWithCategoryRewards | null>(null);
   const [loading, setLoading] = useState(true);
@@ -43,6 +43,10 @@ export default function CardDetailPage() {
   >([]);
 
   useEffect(() => {
+    if (!cardId) {
+      router.push("/cards");
+      return;
+    }
     async function load() {
       const data = await getCard(cardId);
       if (!data) {
@@ -367,6 +371,14 @@ export default function CardDetailPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CardDetailPage() {
+  return (
+    <Suspense fallback={<LoadingSpinner text="載入信用卡..." />}>
+      <CardDetailContent />
+    </Suspense>
   );
 }
 

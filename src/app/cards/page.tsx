@@ -49,7 +49,7 @@ export default function CardsPage() {
           {cards.map((card) => (
             <Link
               key={card.id}
-              href={`/cards/${card.id}`}
+              href={`/cards/detail?id=${card.id}`}
               className="card p-4 block hover:shadow-md transition-shadow"
             >
               <div className="flex items-center justify-between mb-2">
