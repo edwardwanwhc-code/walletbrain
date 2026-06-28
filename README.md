@@ -16,7 +16,7 @@
 | 🎯 **Smart Recommendation** | 決定性推薦引擎，輸入金額/商戶/類別 → Top 3 最佳信用卡 |
 | 🎉 **Promotions** | 優惠列表 + 篩選器 + 登記追蹤 |
 | ⚙️ **Settings** | 基本設定頁面 |
-| 🤖 **Hermes Agent** | 定時優惠更新 (Cron Webhook) |
+| ⏰ **定時自動化** | WorkBuddy 每日自動檢查優惠到期 + 需審查 |
 
 ## 🧠 推薦引擎
 
@@ -32,7 +32,7 @@ Score = Base Reward + Category Reward + Promotion Reward
 - **Frontend**: Next.js 16 (App Router) + TypeScript (strict)
 - **Styling**: Tailwind CSS v4
 - **Database**: Supabase (PostgreSQL)
-- **Deployment**: Vercel (recommended)
+- **Deployment**: GitHub Pages (static export)
 - **Language**: UI 繁體中文, Code & Docs English
 
 ## 🚀 Quick Start
@@ -66,8 +66,6 @@ Fill in your Supabase credentials:
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOi...
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOi...    # For Hermes Agent
-CRON_SECRET=your-random-secret              # For webhook auth
 ```
 
 ### 4. Run Dev Server
@@ -87,8 +85,8 @@ Built for mobile use — open on your phone and add to home screen for a native 
 - ❌ No bank API connections
 - ❌ No bank credentials stored
 - ✅ All transactions manually entered
-- ✅ Recommendation engine runs entirely client-side / server-side logic
-- ✅ Hermes Agent only updates promotion data — never touches user data
+- ✅ Recommendation engine runs entirely client-side
+- ✅ WorkBuddy automation only updates promotion data — never touches user data
 
 ## 📂 Project Structure
 
@@ -96,8 +94,6 @@ Built for mobile use — open on your phone and add to home screen for a native 
 walletbrain/
 ├── src/
 │   ├── app/                    # Next.js App Router pages
-│   │   ├── api/cron/           # Hermes Agent webhook
-│   │   ├── api/recommend/      # Recommendation API
 │   │   ├── cards/              # Card management pages
 │   │   ├── transactions/       # Transaction pages
 │   │   ├── promotions/         # Promotions page
@@ -111,6 +107,9 @@ walletbrain/
 │   ├── services/               # Data access layer
 │   ├── types/                  # TypeScript type definitions
 │   └── hooks/                  # Custom React hooks
+├── .github/
+│   └── workflows/
+│       └── deploy.yml          # GitHub Actions auto-deploy
 ├── supabase/
 │   └── migrations/             # Database migration SQL
 └── docs/                       # Specification documents
