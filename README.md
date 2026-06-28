@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WalletBrain 🧠💳
 
-## Getting Started
+**香港信用卡智能推薦助手** — 幫你喺消費時快速判斷用邊張信用卡最慳錢。
 
-First, run the development server:
+> Built with Next.js 16 + TypeScript + Tailwind CSS v4 + Supabase
+
+---
+
+## ✨ Features
+
+| Module | Description |
+|--------|-------------|
+| 📊 **Dashboard** | 主頁儀表板，顯示摘要、到期警報、最近交易 |
+| 💳 **Card Management** | 信用卡 CRUD + 類別回贈管理 + 每月上限追蹤 |
+| 📝 **Transaction Tracking** | 手動輸入交易，追蹤每月消費金額 |
+| 🎯 **Smart Recommendation** | 決定性推薦引擎，輸入金額/商戶/類別 → Top 3 最佳信用卡 |
+| 🎉 **Promotions** | 優惠列表 + 篩選器 + 登記追蹤 |
+| ⚙️ **Settings** | 基本設定頁面 |
+| 🤖 **Hermes Agent** | 定時優惠更新 (Cron Webhook) |
+
+## 🧠 推薦引擎
+
+```
+Score = Base Reward + Category Reward + Promotion Reward
+        - Cap Penalty - Registration Penalty - Confidence Penalty
+```
+
+**100% 決定性計算，無需 LLM** — 即時、免費、可靠。
+
+## 🏗️ Tech Stack
+
+- **Frontend**: Next.js 16 (App Router) + TypeScript (strict)
+- **Styling**: Tailwind CSS v4
+- **Database**: Supabase (PostgreSQL)
+- **Deployment**: Vercel (recommended)
+- **Language**: UI 繁體中文, Code & Docs English
+
+## 🚀 Quick Start
+
+### 1. Clone & Install
+
+```bash
+git clone https://github.com/edwardwanwhc-code/walletbrain.git
+cd walletbrain
+npm install
+```
+
+### 2. Set Up Supabase
+
+1. Create a [Supabase](https://supabase.com) project
+2. Run the migration SQL in SQL Editor:
+
+```bash
+# Copy the entire contents of:
+supabase/migrations/001_initial_schema.sql
+```
+
+### 3. Configure Environment
+
+```bash
+cp .env.example .env
+```
+
+Fill in your Supabase credentials:
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOi...
+SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOi...    # For Hermes Agent
+CRON_SECRET=your-random-secret              # For webhook auth
+```
+
+### 4. Run Dev Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📱 Mobile-First
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Built for mobile use — open on your phone and add to home screen for a native app experience.
 
-## Learn More
+## 🔒 Security
 
-To learn more about Next.js, take a look at the following resources:
+- ❌ No bank API connections
+- ❌ No bank credentials stored
+- ✅ All transactions manually entered
+- ✅ Recommendation engine runs entirely client-side / server-side logic
+- ✅ Hermes Agent only updates promotion data — never touches user data
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📂 Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+walletbrain/
+├── src/
+│   ├── app/                    # Next.js App Router pages
+│   │   ├── api/cron/           # Hermes Agent webhook
+│   │   ├── api/recommend/      # Recommendation API
+│   │   ├── cards/              # Card management pages
+│   │   ├── transactions/       # Transaction pages
+│   │   ├── promotions/         # Promotions page
+│   │   ├── recommend/          # Smart recommendation page
+│   │   └── settings/           # Settings page
+│   ├── components/             # Reusable UI components
+│   ├── lib/                    # Core logic
+│   │   ├── recommendation.ts   # 🔥 Recommendation engine
+│   │   ├── supabase.ts         # Supabase client
+│   │   └── constants.ts        # App constants
+│   ├── services/               # Data access layer
+│   ├── types/                  # TypeScript type definitions
+│   └── hooks/                  # Custom React hooks
+├── supabase/
+│   └── migrations/             # Database migration SQL
+└── docs/                       # Specification documents
+```
 
-## Deploy on Vercel
+## 📄 License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
