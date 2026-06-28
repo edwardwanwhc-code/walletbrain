@@ -83,7 +83,7 @@ function calculatePromotionReward(
   baseReward: number
 ): number {
   if (promo.reward_rate !== null && promo.reward_rate !== undefined) {
-    const promoReward = amount * Number(promo.reward_rate);
+    const promoReward = amount * Number(promo.reward_rate) / 100;
     if (promo.maximum_reward !== null && promo.maximum_reward !== undefined) {
       return Math.min(promoReward, Number(promo.maximum_reward));
     }
@@ -121,13 +121,13 @@ export async function recommend(input: RecommendationInput): Promise<Recommendat
       continue;
     }
 
-    // Calculate base reward
-    const baseReward = amount_hkd * Number(card.base_reward_rate);
+    // Calculate base reward (rates are stored as percentages, e.g. 4 = 4%)
+    const baseReward = amount_hkd * Number(card.base_reward_rate) / 100;
 
     // Calculate category reward (higher rate between base and category-specific)
     const catRate = getCategoryReward(card, category);
     const effectiveRate = Math.max(Number(card.base_reward_rate), catRate);
-    const categoryReward = amount_hkd * effectiveRate;
+    const categoryReward = amount_hkd * effectiveRate / 100;
 
     // Match promotion
     const matchedPromo = matchPromotion(promotions, card, category, amount_hkd, merchant, location);
@@ -196,7 +196,7 @@ export async function recommend(input: RecommendationInput): Promise<Recommendat
     parts.push(`${card.bank} ${card.card_name}`);
     if (effectiveRate > 0) {
       parts.push(
-        `${categoryReward > baseReward ? `類別回贈 ${(effectiveRate * 100).toFixed(1)}%` : `基本回贈 ${(effectiveRate * 100).toFixed(1)}%`}`
+        `${categoryReward > baseReward ? `類別回贈 ${effectiveRate.toFixed(1)}%` : `基本回贈 ${effectiveRate.toFixed(1)}%`}`
       );
       parts.push(`預計回贈 $${categoryReward.toFixed(2)}`);
     }

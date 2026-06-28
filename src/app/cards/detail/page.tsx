@@ -190,7 +190,7 @@ function CardDetailContent() {
               <div>
                 <div className="text-slate-500 dark:text-slate-400 mb-1">基本回贈率</div>
                 <div className="text-slate-800 dark:text-slate-200">
-                  {(Number(card.base_reward_rate) * 100).toFixed(1)}%
+                  {Number(card.base_reward_rate).toFixed(1)}%
                 </div>
               </div>
             </div>
@@ -244,7 +244,7 @@ function CardDetailContent() {
                       {CATEGORY_ICONS[cr.category]} {CATEGORY_LABELS[cr.category]}
                     </span>
                     <span className="font-medium text-slate-800 dark:text-slate-200">
-                      {(Number(cr.reward_rate) * 100).toFixed(1)}%
+                      {Number(cr.reward_rate).toFixed(1)}%
                       {cr.cap_amount && ` (上限 $${Number(cr.cap_amount).toFixed(0)})`}
                     </span>
                   </div>

@@ -74,7 +74,7 @@ export default function CardsPage() {
               <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                 <span>{REWARD_TYPE_LABELS[card.reward_type] || card.reward_type}</span>
                 {card.base_reward_rate > 0 && (
-                  <span>· 基本回贈 {(Number(card.base_reward_rate) * 100).toFixed(1)}%</span>
+                  <span>· 基本回贈 {Number(card.base_reward_rate).toFixed(1)}%</span>
                 )}
                 {card.monthly_cap_amount && (
                   <span>· 每月上限 ${Number(card.monthly_cap_amount).toFixed(0)}</span>
@@ -87,7 +87,7 @@ export default function CardsPage() {
                       key={cr.id}
                       className="inline-flex items-center gap-0.5 text-xs bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded"
                     >
-                      {CATEGORY_ICONS[cr.category] || ""} {(Number(cr.reward_rate) * 100).toFixed(1)}%
+                      {CATEGORY_ICONS[cr.category] || ""} {Number(cr.reward_rate).toFixed(1)}%
                     </span>
                   ))}
                   {card.category_rewards.length > 4 && (

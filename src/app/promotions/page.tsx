@@ -169,7 +169,7 @@ export default function PromotionsPage() {
                   {promo.category && <CategoryBadge category={promo.category} size="sm" />}
                   {promo.reward_rate && (
                     <span className="text-primary font-medium">
-                      {(Number(promo.reward_rate) * 100).toFixed(1)}% 回贈
+                      {Number(promo.reward_rate).toFixed(1)}% 回贈
                     </span>
                   )}
                 </div>
